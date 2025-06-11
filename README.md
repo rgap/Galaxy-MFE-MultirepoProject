@@ -66,8 +66,6 @@ docker-compose up -d
 
 ## 🐳 Docker Commands
 
-### Basic Operations
-
 ```bash
 # Build all services
 docker-compose build
