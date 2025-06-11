@@ -4,18 +4,6 @@
 
 This project implements a Microfrontend (MFE) Multirepository Architecture using React only, where each application can be developed, deployed, and maintained independently.
 
-### Applications Structure
-
-```
-├── mfe-host/                    # Shell/Host application (Port 3000)
-├── mfe-catalog/                 # Product catalog microfrontend (Port 3001)
-├── mfe-cart/                    # Shopping cart microfrontend (Port 3002)
-├── mfe-checkout/                # Checkout process microfrontend (Port 3003)
-├── mfe-common-components/       # Shared React components library
-├── mfe-common-resources/        # Shared CSS resources
-├── mfe-playground/              # Development playground environment
-```
-
 ## 🏛️ Tech Stack
 
 - **Frontend**: React 18
@@ -39,6 +27,21 @@ git clone https://github.com/rgap/mfe-common-components.git
 git clone https://github.com/rgap/mfe-common-resources.git
 ```
 
+The complete project structure should look like:
+
+```
+├── .gitignore                   # Git ignore rules
+├── docker-compose.yml           # Docker services configuration
+├── Dockerfile.shared-libs       # Shared libraries Docker build
+├── run-all.sh                   # Local development startup script
+├── mfe-host/                    # Main host application
+├── mfe-catalog/                 # Remote: Product catalog microfrontend
+├── mfe-cart/                    # Remote: Shopping cart microfrontend
+├── mfe-checkout/                # Remote: Checkout process microfrontend
+├── mfe-playground/              # Development playground
+├── mfe-common-components/       # Shared React components
+└── mfe-common-resources/        # Shared CSS resources
+```
 
 ### Step 2: Build All Services
 
@@ -81,3 +84,31 @@ docker-compose down
 # Restart all services
 docker-compose restart
 ```
+
+## 🔗 Dependencies & Mocking Strategy
+
+Each microfrontend has specific dependencies on other services and shared resources:
+
+### MFE Catalog Dependencies:
+
+- Needs to add products to the shopping cart via `useCart()` hook
+- Uses shared UI components (just a Button for now) from `mfe-common-components`
+
+### MFE Cart Dependencies:
+
+- Manages its cart state management via `CartProvider`
+- Uses shared UI components (just a Button for now) from `mfe-common-components`
+- Exports cart context (`useCart`) for other MFEs to consume
+
+### MFE Checkout Dependencies:
+
+- Needs cart context and directly imports `useCart` from `cart/useCart` to access cart items, update quantities, and remove items
+- Renders cart items and manages checkout flow
+- Uses shared UI components (just a Button for now) from `mfe-common-components`
+
+### MFE Host Dependencies:
+
+- Lazy loads and orchestrates all microfrontends (`catalog`, `cart`, `checkout`)
+- Imports and wraps the cart provider from `cart/CartContext`
+- Uses shared UI components (just a Button for now) from `mfe-common-components`
+- **Mocks**: Implements error handling to gracefully fallback to mocks when remote MFEs fail
