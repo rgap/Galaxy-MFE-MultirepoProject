@@ -38,7 +38,8 @@ Repositories:
 - **Common Resources**: [github.com/rgap/mfe-common-resources](https://github.com/rgap/mfe-common-resources)
 
 📺 **Video Explanation**
-👉 [https://www.youtube.com/watch?v=510N-n4e_Bw](https://www.youtube.com/watch?v=510N-n4e_Bw)
+
+- 👉 [https://www.youtube.com/watch?v=510N-n4e_Bw](https://www.youtube.com/watch?v=510N-n4e_Bw)
 
 The complete project structure should look like:
 
